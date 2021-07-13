@@ -2,17 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import PanelBody from "./PanelBody";
 import PanelFooter from "./PanelFooter";
+import Logo from "./Logo";
 import { SIDEBAR_WIDTH_REDUCED, SIDEBAR_WIDTH_FULL } from "./config";
 import { PanelProps, PushedProps } from "./types";
 
 interface Props extends PanelProps, PushedProps {
   showMenu: boolean;
   isMobile: boolean;
+  togglePush: () => void;
 }
 
-const StyledPanel = styled.div<{ isPushed: boolean; showMenu: boolean }>`
+const StyledPanel = styled.div<{ isPushed: boolean; showMenu: boolean; }>`
   position: fixed;
-  padding-top: ${({ showMenu }) => (showMenu ? "80px" : 0)};
+  padding-top: ${({ showMenu }) => (showMenu ? "0px" : 0)};
   top: 0;
   left: 0;
   display: flex;
@@ -35,9 +37,18 @@ const StyledPanel = styled.div<{ isPushed: boolean; showMenu: boolean }>`
 `;
 
 const Panel: React.FC<Props> = (props) => {
-  const { isPushed, showMenu } = props;
+  const { isPushed, togglePush, showMenu, links, isMobile } = props;
+
+  // Find the home link if provided
+  const homeLink = links.find((link) => link.label === "Home");
+
   return (
     <StyledPanel isPushed={isPushed} showMenu={showMenu}>
+      <Logo
+          isPushed={isPushed}
+          togglePush={togglePush}
+          href={homeLink?.href ?? "/"}
+        />
       <PanelBody {...props} />
       <PanelFooter {...props} />
     </StyledPanel>

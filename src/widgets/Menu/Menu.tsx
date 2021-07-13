@@ -4,7 +4,6 @@ import throttle from "lodash/throttle";
 import Overlay from "../../components/Overlay/Overlay";
 import { Flex } from "../../components/Flex";
 import { useMatchBreakpoints } from "../../hooks";
-import Logo from "./Logo";
 import Panel from "./Panel";
 import UserBlock from "./UserBlock";
 import { NavProps } from "./types";
@@ -108,18 +107,10 @@ const Menu: React.FC<NavProps> = ({
     };
   }, []);
 
-  // Find the home link if provided
-  const homeLink = links.find((link) => link.label === "Home");
-
   return (
     <Wrapper>
       <StyledNav showMenu={showMenu}>
-        <Logo
-          isPushed={isPushed}
-          togglePush={() => setIsPushed((prevState: boolean) => !prevState)}
-          isDark={isDark}
-          href={homeLink?.href ?? "/"}
-        />
+        <div></div>
         <Flex>
           <UserBlock account={account} login={login} logout={logout} />
           {profile && <Avatar profile={profile} />}
@@ -128,6 +119,7 @@ const Menu: React.FC<NavProps> = ({
       <BodyWrapper>
         <Panel
           isPushed={isPushed}
+          togglePush={() => setIsPushed((prevState: boolean) => !prevState)}
           isMobile={isMobile}
           showMenu={showMenu}
           isDark={isDark}

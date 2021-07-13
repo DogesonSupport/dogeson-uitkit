@@ -1,7 +1,7 @@
 import React from "react";
 interface Props {
     isPushed: boolean;
-    isDark: boolean;
+    isDark?: boolean | undefined;
     togglePush: () => void;
     href: string;
 }
