@@ -1,34 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { LogoIcon } from "../../components/Svg";
 import Flex from "../../components/Flex/Flex";
-import { HamburgerIcon, HamburgerCloseIcon } from "./icons";
+import { HamburgerIcon, HamburgerCloseIcon, LogoIcon as LogoWithText } from "./icons";
 import MenuButton from "./MenuButton";
 
 interface Props {
   isPushed: boolean;
-  isDark?: boolean | undefined;
+  isDark: boolean;
   togglePush: () => void;
   href: string;
 }
 
 const StyledLink = styled(Link)`
   display: flex;
-  justify-content: center;
   align-items: center;
-`;
-
-const LogoIconMobile = styled.div`
-  &.mobile-icon {
-    width: 52px;
-    height: 65px;
+  .mobile-icon {
+    width: 32px;
+    ${({ theme }) => theme.mediaQueries.nav} {
+      display: none;
+    }
   }
-`;
-
-const LogoIconDesktop = styled.div`
-  &.desktop-icon {
-    width: 84px;
-    height: 101px;
+  .desktop-icon {
+    width: 156px;
+    display: none;
+    ${({ theme }) => theme.mediaQueries.nav} {
+      display: block;
+    }
   }
 `;
 
@@ -36,17 +35,20 @@ const Logo: React.FC<Props> = ({ isPushed, togglePush, isDark, href }) => {
   const isAbsoluteUrl = href.startsWith("http");
   const innerLogo = (
     <>
-      <LogoIconMobile className="mobile-icon">
-        <image width="100%" height="100%" href="/images/egg/logo.png"/>
-      </LogoIconMobile>
-      <LogoIconDesktop className="desktop-icon">
-        <image width="100%" height="100%" href="/images/egg/logo.png"/>
-      </LogoIconDesktop>
+      <LogoIcon className="mobile-icon" />
+      <LogoWithText className="desktop-icon" isDark={isDark} />
     </>
   );
 
   return (
-    <Flex flexDirection="column">
+    <Flex>
+      <MenuButton aria-label="Toggle menu" onClick={togglePush} mr="24px">
+        {isPushed ? (
+          <HamburgerCloseIcon width="24px" color="textSubtle" />
+        ) : (
+          <HamburgerIcon width="24px" color="textSubtle" />
+        )}
+      </MenuButton>
       {isAbsoluteUrl ? (
         <StyledLink as="a" href={href} aria-label="Pancake home page">
           {innerLogo}
@@ -56,13 +58,6 @@ const Logo: React.FC<Props> = ({ isPushed, togglePush, isDark, href }) => {
           {innerLogo}
         </StyledLink>
       )}
-      <MenuButton aria-label="Toggle menu" onClick={togglePush} mx="8px">
-        {isPushed ? (
-          <HamburgerCloseIcon width="24px" color="textSubtle" />
-        ) : (
-          <HamburgerIcon width="24px" color="textSubtle" />
-        )}
-      </MenuButton>
     </Flex>
   );
 };
